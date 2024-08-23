@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Robot Car Parking Simulator</title>
+    <script src="modules/core.js"></script>
+    <script src="modules/lists.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            height: 100%; /* 调整为100%以适应内容 */
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column; /* 使内容垂直排列 */
+            align-items: center;
+        }
+
+        #user-inputs {
+            display: flex; /* 使用flex布局使其横向排列 */
+            align-items: center;
+            width: 100%; /* 根据需要调整宽度 */
+            padding: 10px; /* 添加内边距 */
+            background-color: #f9f9f9; /* 可选：添加背景色 */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* 可选：添加阴影以分层 */
+        }
+
+        #user-inputs h3 {
+            margin-right: 20px; /* 给标题和表单元素之间添加一些间距 */
+        }
+
+        #user-inputs label, #user-inputs select {
+            margin-right: 10px; /* 给每个表单元素之间添加一些间距 */
+        }
+
+        #container {
+            width: 1200px;
+            height: 650px; /* 增加高度以容纳机器人轨道 */
+            display: flex;
+            flex-direction: column; /* 改为纵向排列 */
+            align-items: stretch;
+            margin-top: 20px; /* 调整整体布局 */
+        }
+
+        .section-row {
+            display: flex;
+            width: 100%;
+            flex: 1; /* 使主区块灵活填充空间 */
+        }
+
+        .section {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #garage { background-color: red; }
+        #driveway { background-color: green; }
+        #house { background-color: blue; }
+
+        .car, .door, .robot, .button {
+            position: absolute;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .car {
+            background-image: url('robot/car.png');
+            width: 200px;
+            height: 200px;
+            transform: scaleX(-1); /* 镜像翻转车的图像 */
+        }
+        .fire-gif {
+            position: absolute;  /* 绝对定位，相对于它的父元素 .car */
+            width: 50px;  /* 火焰 GIF 的宽度 */
+            height: 50px;  /* 火焰 GIF 的高度 */
+            background-image: url('robot/fire.gif');  /* 设置背景图片为火焰 GIF */
+            background-size: cover;  /* 覆盖整个元素 */
+            top: 40%;  /* 垂直居中 */
+            left: 190px;  /* 将火焰位置设置到汽车的左侧 */
+            transform: scaleX(-1);
+            display: none;  /* 初始不显示，只在引擎开启时显示 */
+        }
+        .door {
+            background-image: url('robot/door.png');
+            width: 200px;
+            height: 200px;
+            top: 120px;
+            left: -100px;
+        }
+
+        .robot {
+            background-image: url('robot/robot.png');
+            width: 150px; /* 机器人的宽度 */
+            height: 150px; /* 机器人的高度 */
+            position: absolute; /* 确保机器人的定位是绝对的 */
+            left: 50%; /* 将机器人移动到其父元素的中心点 */
+            top: 50%; /* 将机器人移动到其父元素的中心点 */
+            transform: translate(-50%, -50%); /* 偏移机器人自身宽度和高度的50%，以确保完全居中 */
+            background-size: contain; /* 调整背景大小以适应新尺寸 */
+            background-repeat: no-repeat; /* 背景图片不重复 */
+        }
+
+        .button {
+            background-image: url('robot/button.png');
+            width: 50px;
+            height: 50px;
+            right: 100px;
+            bottom: 45px;
+        }
+
+        .robot-track { /* New class for the robot track */
+            display: flex;
+            width: 100%;
+            height: 150px; /* Height of the robot track */
+            background-color: black; /* Black color for the track */
+        }
+
+        .robot-track > div {
+            position: relative; /* 确保robot的父元素具有相对定位 */
+            flex: 1; /* 每个轨道部分平分空间 */
+            display: flex; /* 使用Flex布局使内容居中 */
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
+        }
+
+        .section-label {
+            position: absolute;   /* 绝对定位 */
+            top: 10px;         /* 从底部向上10px */
+            left: 50%;            /* 水平居中 */
+            transform: translateX(-50%); /* 确保文本居中 */
+            color: white;         /* 文本颜色为白色 */
+            font-size: 20px;      /* 字体大小 */
+            font-weight: bold;    /* 字体加粗 */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6); /* 文本阴影，提高可读性 */
+        }
+
+        #status-bar {
+            display: flex;
+            justify-content: space-around;  /* 在条目之间均匀分配空间 */
+            padding: 10px;
+            background-color: #f2f2f2;  /* 浅灰色背景 */
+            color: #333;  /* 深色文字 */
+            width: 98.2%;  /* 占满整个容器宽度 */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);  /* 轻微的阴影效果 */
+        }
+
+        .status-item {
+            font-size: 16px;  /* 文字大小 */
+            font-weight: bold;  /* 加粗字体 */
+        }
+    </style>
+</head>
+<body>
+    <div id="user-inputs">
+        <h3>Enter Final States:</h3>
+        
+        <label for="final-robot-position">Final Robot Position:</label>
+        <select id="final-robot-position">
+            <option value="garage">garage</option>
+            <option value="driveway">driveway</option>
+            <option value="house">house</option>
+        </select>
+        
+        <label for="final-car-position">Final Car Position:</label>
+        <select id="final-car-position">
+            <option value="garage">garage</option>
+            <option value="driveway">driveway</option>
+        </select>
+        
+        <label for="final-robot-in-car">Final Robot in Car:</label>
+        <select id="final-robot-in-car">
+            <option value="inside">inside</option>
+            <option value="outside">outside</option>
+        </select>
+        
+        <label for="final-engine-on">Final Engine on:</label>
+        <select id="final-engine-on">
+            <option value="on">on</option>
+            <option value="off">off</option>
+        </select>
+        
+        <label for="final-door-open">Final Door Open:</label>
+        <select id="final-door-open">
+            <option value="open">open</option>
+            <option value="closed">closed</option>
+        </select>
+        
+        <button onclick="generatePlan()">Generate Plan</button>
+    </div>    
+
+    <div id="container">
+        <div id="status-bar">
+            <div class="status-item">Robot Position: <span id="robot-position">Garage</span></div>
+            <div class="status-item">Car Position: <span id="car-position">Garage</span></div>
+            <div class="status-item">Robot in Car: <span id="robot-in-car">No</span></div>
+            <div class="status-item">Engine on: <span id="engine-on">No</span></div>
+            <div class="status-item">Door Open: <span id="door-open">No</span></div>
+        </div>        
+
+        <div class="section-row">
+            <div class="section" id="garage">
+                <div class="car">
+                    <div class="fire-gif"></div>
+                </div>
+                <span class="section-label">Garage</span>        
+            </div>
+            <div class="section" id="driveway">
+                <span class="section-label">Driveway</span>
+                <div class="door"></div>
+            </div>
+            <div class="section" id="house">
+                <span class="section-label">House</span>
+            </div>
+            
+        </div>
+        <div class="robot-track"> <!-- New robot track added -->
+            <div id="garage1" style="flex: 1;">
+                <div class="robot"></div>
+            </div>
+            <div id="driveway1" style="flex: 1;"></div>
+            <div id="house1" style="flex: 1;">
+                <div class="button"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var session;
+        let robotElement = document.querySelector('.robot'); 
+        let carElement = document.querySelector('.car');
+        var engineOn = false;  // 全局变量，用于跟踪引擎状态
+        var doorOpen = false;  // 全局变量，用于跟踪门状态
+
+        function generatePlan() {
+            session = pl.create();
+            session.consult(`
+                :- use_module(library(lists)).
+                
+                is_plan(Goal_state, Goal_state, [], States_so_far).
+
+                is_plan(State, Goal_state, [Action|Plan_for_state_after], States_so_far):-
+                    can_do(State, Action, State_after),
+                    \\+ member(State_after, States_so_far),
+                    is_plan(State_after, Goal_state, Plan_for_state_after, [State_after|States_so_far]).
+                    
+                is_plan_without_loop(State, Goal_state, Plan):-
+                    is_plan(State, Goal_state, Plan, [State]).
+
+                car_place(driveway).
+                car_place(garage).
+                robot_place(Place) :- car_place(Place).
+                robot_place(house).
+
+                can_do(state(house, Car_location, outside, Engine_on_or_off, open),  
+                    pressGarageDoorButton,
+                    state(house, Car_location, outside, Engine_on_or_off, closed)) :-
+                car_place(Car_location).
+
+                can_do(state(house, Car_location, outside, Engine_on_or_off, closed),  
+                    pressGarageDoorButton,
+                    state(house, Car_location, outside, Engine_on_or_off, open)) :-
+                car_place(Car_location).
+
+                can_do(state(Car_location, Car_location, inside, off, Garage_door_open_or_closed),  
+                    pressEngineButton,
+                    state(Car_location, Car_location, inside, on, Garage_door_open_or_closed)) :-
+                car_place(Car_location).
+
+                can_do(state(Car_location, Car_location, inside, on, Garage_door_open_or_closed),  
+                    pressEngineButton,
+                    state(Car_location, Car_location, inside, off, Garage_door_open_or_closed)) :-
+                car_place(Car_location).
+
+                can_do(state(Car_location, Car_location, outside, Engine_on_or_off, Garage_door_open_or_closed),  
+                    getIntoCar,
+                    state(Car_location, Car_location, inside, Engine_on_or_off, Garage_door_open_or_closed)) :-
+                car_place(Car_location).
+
+                can_do(state(Car_location, Car_location, inside, Engine_on_or_off, Garage_door_open_or_closed),  
+                    getOutOfCar,
+                    state(Car_location, Car_location, outside, Engine_on_or_off, Garage_door_open_or_closed)) :-
+                car_place(Car_location).
+
+                can_do(state(From_location, Car_location, outside, Engine_on_or_off, Garage_door_open_or_closed),  
+                    walk(From_location, To_location),
+                    state(To_location, Car_location, outside, Engine_on_or_off, Garage_door_open_or_closed)) :-
+                car_place(Car_location),
+                robot_place(From_location),
+                robot_place(To_location),
+                From_location \\= To_location,
+                \\+ (From_location = garage, To_location = house),
+                \\+ (From_location = house, To_location = garage).
+
+                can_do(state(From_location, From_location, inside, on, open),  
+                    drive(From_location, To_location),
+                    state(To_location, To_location, inside, on, open)) :-
+                car_place(From_location),
+                car_place(To_location),
+                From_location \\= To_location.
+                
+            `, {
+                success: function() {
+                    console.log("Prolog rules loaded successfully.");
+                    proceedWithPlanGeneration(); // 继续执行计划生成的逻辑
+                },
+                error: function(err) {
+                    console.error("Failed to load Prolog rules: ", err);
+                }
+            });
+        }
+
+        function proceedWithPlanGeneration() {
+            const finalRobotPosition = document.getElementById('final-robot-position').value;
+            const finalCarPosition = document.getElementById('final-car-position').value;
+            const finalRobotInCar = document.getElementById('final-robot-in-car').value
+            const finalEngineOn = document.getElementById('final-engine-on').value;
+            const finalDoorOpen = document.getElementById('final-door-open').value;
+
+            console.log(finalRobotPosition)
+
+            const goalState = `state(${finalRobotPosition}, ${finalCarPosition}, ${finalRobotInCar}, ${finalEngineOn}, ${finalDoorOpen})`;
+            const currentState = "state(garage, garage, outside, off, closed)";
+
+            console.log(goalState)
+            console.log(currentState)
+
+            session.query(`is_plan_without_loop(${currentState}, ${goalState}, Plan).`);
+            session.answer(x => {
+                if (x === false) {
+                    alert("No plan found.");
+                } else {
+                    //console.log(x);
+                    const answer = session.format_answer(x);
+                    
+                    alert(answer);
+                    showPlanActions(answer);
+                }
+            }, error => {
+                console.error("Query failed: ", error);
+                alert("Error executing plan query.");
+            });
+        }
+
+        function showPlanActions(plan) {
+            // 使用更复杂的正则表达式来正确匹配动作，包括括号中的逗号
+            const actions = plan.match(/\[(.*?)\]/)[1].match(/([a-zA-Z]+\([^)]*\)|[a-zA-Z]+)/g);
+            console.log(actions);
+
+            // 依次执行每个动作
+            executeActions(actions, () => location.reload());
+        }
+
+        
+        function executeActions(actions, callback) {
+            let index = 0;
+
+            function executeNextAction() {
+                if (index < actions.length) {
+                    const action = actions[index];
+                    console.log("Executing action:", action);
+                    performAction(action);
+                    index++;
+                    setTimeout(executeNextAction, 2500); // 设置动画间隔为1秒
+                } else {
+                    callback(); // 动作执行完毕后调用回调函数
+                }
+            }
+
+            executeNextAction();
+        }
+
+        function performAction(action) {
+
+
+            switch (action) {
+                case 'getIntoCar':
+                    document.querySelector('.robot').style.display = 'none'; // 让车消失
+                    document.getElementById('robot-in-car').innerText = 'Yes';
+                    break;
+                case 'pressEngineButton':
+                    // 在这里添加相应的动画代码
+                    engineOn = !engineOn;
+                    document.getElementById('engine-on').innerText = engineOn ? 'Yes' : 'No';
+                    if (engineOn) {
+                        document.querySelector('.fire-gif').style.display = 'block';  // 显示火焰
+                    } else {
+                        document.querySelector('.fire-gif').style.display = 'none';  // 隐藏火焰
+                    }
+                    break;
+                case 'getOutOfCar':
+                    document.querySelector('.robot').style.display = 'block'; // 让车重新出现
+                    document.getElementById('robot-in-car').innerText = 'No';
+                    break;
+                case 'walk(garage,driveway)':                      
+                    document.getElementById('garage1').removeChild(document.querySelector('.robot'));
+                    document.getElementById('driveway1').appendChild(robotElement);
+                    document.getElementById('robot-position').innerText = 'Driveway';
+                    break;
+                case 'walk(driveway,house)':
+                    document.getElementById('driveway1').removeChild(document.querySelector('.robot'));
+                    document.getElementById('house1').appendChild(robotElement);
+                    document.getElementById('robot-position').innerText = 'House';
+                    break;
+                case 'pressGarageDoorButton':
+                    // 在这里添加相应的动画代码
+                    doorOpen = !doorOpen;
+                    document.getElementById('door-open').innerText = doorOpen ? 'Yes' : 'No';
+                    if (doorOpen){
+                        document.querySelector('.door').style.display = 'none';
+                    } else {
+                        document.querySelector('.door').style.display = 'block';
+                    }
+                    break;
+                case 'walk(house,driveway)':
+                    document.getElementById('house1').removeChild(document.querySelector('.robot'));
+                    document.getElementById('driveway1').appendChild(robotElement);
+                    document.getElementById('robot-position').innerText = 'Driveway';
+                    break;
+                case 'walk(driveway,garage)':
+                    document.getElementById('driveway1').removeChild(document.querySelector('.robot'));
+                    document.getElementById('garage1').appendChild(robotElement);
+                    document.getElementById('robot-position').innerText = 'Garage';
+                    break;
+                case 'drive(driveway,garage)':
+                    document.getElementById('driveway1').removeChild(document.querySelector('.robot'));
+                    document.getElementById('garage1').appendChild(robotElement);
+                    document.getElementById('driveway').removeChild(document.querySelector('.car'));
+                    document.getElementById('garage').appendChild(carElement);
+                    document.getElementById('robot-position').innerText = 'Garage';
+                    document.getElementById('car-position').innerText = 'Garage';
+                    break;
+                case 'drive(garage,driveway)':
+                    document.getElementById('garage1').removeChild(document.querySelector('.robot'));
+                    document.getElementById('driveway1').appendChild(robotElement);
+                    document.getElementById('garage').removeChild(document.querySelector('.car'));
+                    document.getElementById('driveway').appendChild(carElement);
+                    document.getElementById('robot-position').innerText = 'Driveway';
+                    document.getElementById('car-position').innerText = 'Driveway';
+                    break;
+                default:
+                    console.log("Unknown action:", action);
+            }
+        }
+
+
+    </script>
+</body>
+</html>

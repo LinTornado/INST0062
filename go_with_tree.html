@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tau Prolog Web Page</title>
+    <script src="modules/core.js"></script>
+    <script src="modules/lists.js"></script>
+    <script src="modules/dom.js"></script>
+    <script src="modules/random.js"></script>
+    <script src="modules/statistics.js"></script>
+    <script src="modules/js.js"></script>
+    <script src="modules/os.js"></script>
+    <script src="modules/format.js"></script>
+    <script src="modules/charsio.js"></script>
+    <script src="modules/concurrent.js"></script>
+    <script src="modules/promises.js"></script>
+    <script src="modules/draw-derivation-trees.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            word-wrap: break-word; /* 允许在长单词或URL内部断行 */
+            white-space: pre-wrap; /* 保持空格格式，并允许自动换行 */
+            overflow-wrap: break-word; /* 确保长单词或URL在必要时能断行 */
+        }
+        .query-container {
+            display: flex;
+            align-items: flex-start; /* 对齐顶部 */
+            margin-top: 10px;
+        }
+        .query-container span {
+            font-family: monospace;
+            font-size: 14px;
+            margin-right: 5px;
+            margin-top: 6px; /* 确保对齐顶部 */
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            font-family: monospace;
+            font-size: 14px;
+            box-sizing: border-box; /* 确保padding和border不会影响总高度 */
+        }
+        .query-textarea-container { /* 添加：新的容器 */
+            display: flex;
+            flex-grow: 1;
+            height: 150px; /* 确保高度一致 */
+        }
+        .query-textarea {
+            flex-grow: 1; /* 确保文本框占据剩余空间 */
+            height: 100%; /* 确保高度与其他文本框一致 */
+            margin-top: 0; /* 确保对齐 */
+            font-family: monospace;
+            font-size: 14px;
+            box-sizing: border-box; /* 确保padding和border不会影响总高度 */
+        }
+        #goButton, #viewTreeButton {
+            margin-top: 15px; /* 添加：增加按钮上方的间距 */
+        }
+        canvas {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Prolog Query Program Created by Tau Prolog</h1>
+
+<p>Click the "Go" button to run the Prolog query and click the "View Tree" button to view the corresponding derivation tree.</p>
+
+<textarea id="prologCode">
+Remove this text and define the rules and facts here.
+</textarea>
+
+<div class="query-container">
+    <span>?-</span> <!-- 添加：-?前缀 -->
+    <div class="query-textarea-container"> <!-- 添加：新的容器 -->
+        <textarea id="prologQuery" class="query-textarea">
+Remove this text and enter the query here.
+        </textarea> <!-- 修改：添加类query-textarea -->
+    </div>
+</div>
+
+<button id="goButton">Go</button>
+<button id="viewTreeButton">View Tree</button>
+
+<div id="result"></div>
+<canvas id="derivation"></canvas> <!-- 添加：用于显示生成树的canvas -->
+
+<script>
+    document.getElementById('goButton').addEventListener('click', function() {
+        var session = pl.create();
+        var program = document.getElementById('prologCode').value;
+        var goal = document.getElementById('prologQuery').value;
+
+        session.consult(program, {
+            success: function() {
+                console.log("Program loaded successfully.");
+                session.query(goal, {
+                    success: function(goal) {
+                        console.log("Query executed successfully.");
+                        var results = [];
+                        session.answers(function(answer) {
+                            var formattedAnswer = session.format_answer(answer);
+                            console.log("Formatted answer: ", formattedAnswer);
+                            if (!results.includes(formattedAnswer)) {
+                                results.push(formattedAnswer);
+                            }
+                        }, 1000);
+                        setTimeout(function() {
+                            document.getElementById('result').innerText = results.join("; \n");
+                        }, 1000);
+                    },
+                    error: function(err) {
+                        console.error("Query error: " + err);
+                        document.getElementById('result').innerText = "Query error: " + err;
+                    }
+                });
+            },
+            error: function(err) {
+                console.error("Consult error: " + err);
+                document.getElementById('result').innerText = "Consult error: " + err;
+            }
+        });
+    });
+
+    document.getElementById('viewTreeButton').addEventListener('click', function() {
+        var session = pl.create();
+        var program = document.getElementById('prologCode').value;
+        var goal = document.getElementById('prologQuery').value;
+
+        session.consult(program, {
+            success: function() {
+                console.log("Program loaded successfully.");
+                session.query(goal, {
+                    success: function(goal) {
+                        console.log("Query executed successfully.");
+                        session.draw(10, "derivation"); // 绘制生成树，深度限制为10
+                    },
+                    error: function(err) {
+                        console.error("Query error: " + err);
+                        document.getElementById('result').innerText = "Query error: " + err;
+                    }
+                });
+            },
+            error: function(err) {
+                console.error("Consult error: " + err);
+                document.getElementById('result').innerText = "Consult error: " + err;
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,12 @@
+1. 如果车和人在同一个位置，按下回车键进入车，再按出车。进车人消失，出车人出现。
+2. 按下d，机器人向右移动，按下a机器人向左移动。机器人消失的情况下车动。但车只能在两个地方动。
+3. 在车内按下f，启动引擎和关闭引擎
+4. 人在house，按下f，开门，关门
+
+
+1. 汽车和机器人初始生成在garage，机器人只能生成在下面这条黑色的里面，这是机器人的专用通道。
+2. 最上面五个矩形里的内容需要根据汽车和机器人的状态而变化，机器人在哪就Robot position就显示哪，汽车的car position同理。但是汽车只能在garage和driveway两个地方移动。robot in car，Engine on，Door open一开始都显示为no。
+3. 如果车和人在同一个位置，也就是说robotposition和car position的值相同，按下回车键进入车，robot in car的值变为yes，再按回车出车，robot in car的值变为no。进车机器人消失，出车机器人出现。如果不在同一位置，按下回车，跳出弹窗：The robot and the car are not in the same position。弹窗带有‘OK’按键，能够关闭弹窗。
+4. robot position的值为house时，按下f键，door open的值变为yes，并且图中的门消失，再按下f键，door open的值变为no，并且图中的门出现，交替进行。
+5. robot in car的值为yes时，按下f，engine in的值变为yes，再按下f，engine in的值变为no，交替进行。
+6. 如果robot in car的值为no，按下d，机器人移动到右边的位置，按下a机器人移动到左边的位置。如果robot in car的值为yes，door open的值为yes，engine on的值为yes，按下这两个键车移动到不同位置。

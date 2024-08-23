@@ -12,18 +12,18 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        flex-direction: column; /* 使内容垂直堆叠 */
+        flex-direction: column; /* Stack content vertically */
     }
 
     #game-rules {
-        background-color: #ffd700;  /* 金色背景，引人注意 */
-        color: #000;  /* 黑色文字，保证对比度和可读性 */
-        padding: 10px;  /* 增加内边距 */
-        text-align: center;  /* 文字居中显示 */
-        border-bottom: 2px solid #ccc;  /* 底部加一条深色边线 */
-        margin-bottom: -30px;  /* 与下方容器留出一些空间 */
-        width: 100%;  /* 横跨整个视窗宽度 */
-        box-sizing: border-box; /* 确保内边距不影响宽度计算 */
+        background-color: #ffd700;  /* Gold background, eye-catching */
+        color: #000;  
+        padding: 10px;  /* Increase the inner margin */
+        text-align: center;  /* Display text in the center */
+        border-bottom: 2px solid #ccc;  /* Add a dark border at the bottom */
+        margin-bottom: -30px;  /* Leave some space with the container below */
+        width: 100%;  /* Across the entire width of the window */
+        box-sizing: border-box; /* Ensure that the margin does not affect the width calculation */
     }
 
     #container {
@@ -32,13 +32,15 @@
         display: flex;
         flex-direction: column; /* Changed to column to stack sections vertically */
         align-items: stretch;
-        margin-top: 50px; /*调整整体布局*/
+        margin-top: 50px; /*Adjust the overall layout */
     }
+
     .section-row {
         display: flex;
         width: 100%;
-        flex: 1; /* Makes the main sections flexibly fill the space */
+        flex: 1; /* Make the main sections flexibly fill the space */
     }
+
     .section {
         flex: 1;
         position: relative;
@@ -46,6 +48,7 @@
         align-items: center;
         justify-content: center;       
     }
+
     #garage { background-color: red; }
     #driveway { background-color: green; }
     #house { background-color: blue; }
@@ -55,23 +58,26 @@
         background-size: contain;
         background-repeat: no-repeat;
     }
+
     .car {
         background-image: url('robot/car.png');
         width: 200px;
         height: 200px;
         transform: scaleX(-1); /* Mirror the car image */
     }
+
     .fire-gif {
-        position: absolute;  /* 绝对定位，相对于它的父元素 .car */
-        width: 50px;  /* 火焰 GIF 的宽度 */
-        height: 50px;  /* 火焰 GIF 的高度 */
-        background-image: url('robot/fire.gif');  /* 设置背景图片为火焰 GIF */
-        background-size: cover;  /* 覆盖整个元素 */
-        top: 40%;  /* 垂直居中 */
-        left: 190px;  /* 将火焰位置设置到汽车的左侧 */
+        position: absolute;  /* Absolute positioning, relative to its parent element .car */
+        width: 50px;  /* Width of Flame GIF */
+        height: 50px;  /* Height of flame gif */
+        background-image: url('robot/fire.gif');  /* Set the background image to a flame GIF */
+        background-size: cover;  /* Covering the entire element */
+        top: 40%;  
+        left: 190px;  /* Set the flame position to the left side of the car */
         transform: scaleX(-1);
-        display: none;  /* 初始不显示，只在引擎开启时显示 */
+        display: none;  /* Not displayed initially, only displayed when the engine is turned on */
     }
+
     .door {
         background-image: url('robot/door.png');
         width: 200px;
@@ -79,17 +85,19 @@
         top: 120px;
         left: -100px;
     }
+
     .robot {
         background-image: url('robot/robot.png');
-        width: 150px; /* 机器人的宽度 */
-        height: 150px; /* 机器人的高度 */
-        position: absolute; /* 确保机器人的定位是绝对的 */
-        left: 50%; /* 将机器人移动到其父元素的中心点 */
-        top: 50%; /* 将机器人移动到其父元素的中心点 */
-        transform: translate(-50%, -50%); /* 偏移机器人自身宽度和高度的50%，以确保完全居中 */
-        background-size: contain; /* 调整背景大小以适应新尺寸 */
-        background-repeat: no-repeat; /* 背景图片不重复 */
+        width: 150px; /* The width of the robot */
+        height: 150px; /* The height of the robot */
+        position: absolute; /* Ensure that the positioning of the robot is absolute */
+        left: 50%; /* Move the robot to the center point of its parent element */
+        top: 50%; /* Move the robot to the center point of its parent element */
+        transform: translate(-50%, -50%); /* Offset the robot by 50% of its own width and height to ensure complete centering */
+        background-size: contain; /* Adjust the background size to fit the new size */
+        background-repeat: no-repeat; /* Prevent duplicate background images */
     }
+
     .button {
         background-image: url('robot/button.png');
         width: 50px;
@@ -97,43 +105,46 @@
         right: 100px;
         bottom: 45px;
     }
+
     .robot-track { /* New class for the robot track */
         display: flex;
         width: 100%;
         height: 150px; /* Height of the robot track */
         background-color: black; /* Black color for the track */
     }
+
     .robot-track > div {
-        position: relative; /* 确保robot的父元素具有相对定位 */
-        flex: 1; /* 每个轨道部分平分空间 */
-        display: flex; /* 使用Flex布局使内容居中 */
-        align-items: center; /* 垂直居中 */
-        justify-content: center; /* 水平居中 */
+        position: relative; /* Ensure that the parent element of the robot has relative positioning */
+        flex: 1; /* Each orbital segment divides the space equally */
+        display: flex; /* Use Flex layout to center content */
+        align-items: center; /* vertical center */
+        justify-content: center; /* horizontal center */
     }
 
     .section-label {
-        position: absolute;   /* 绝对定位 */
-        top: 10px;         /* 从底部向上10px */
-        left: 50%;            /* 水平居中 */
-        transform: translateX(-50%); /* 确保文本居中 */
-        color: white;         /* 文本颜色为白色 */
-        font-size: 20px;      /* 字体大小 */
-        font-weight: bold;    /* 字体加粗 */
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.6); /* 文本阴影，提高可读性 */
+        position: absolute;   /* Absolute positioning */
+        top: 10px;         
+        left: 50%;            /* horizontal center */
+        transform: translateX(-50%); /* Make sure the text is centered */
+        color: white;         /* The text color is white */
+        font-size: 20px;      /* font size */
+        font-weight: bold;    /* blod font */
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.6); /* Text shading */
     }
 
     #status-bar {
         display: flex;
-        justify-content: space-around;  /* 在条目之间均匀分配空间 */
+        justify-content: space-around;  /* Allocate space evenly among items */
         padding: 10px;
-        background-color: #f2f2f2;  /* 浅灰色背景 */
-        color: #333;  /* 深色文字 */
-        width: 98.2%;  /* 占满整个容器宽度 */
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);  /* 轻微的阴影效果 */
+        background-color: #f2f2f2;  /* Light gray background */
+        color: #333;  /* Dark text */
+        width: 98.2%;  /* Fill the entire width of the container */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);  /* Slight shadow effect */
     }
+
     .status-item {
-        font-size: 16px;  /* 文字大小 */
-        font-weight: bold;  /* 加粗字体 */
+        font-size: 16px;  /* Text Size */
+        font-weight: bold;  /* Bold font */
     }
 
 
@@ -156,7 +167,7 @@
         <div class="section-row">
             <div class="section" id="garage">
                 <div class="car">
-                    <div class="fire-gif"></div> <!-- 添加火焰 GIF 容器 -->
+                    <div class="fire-gif"></div> <!-- Add Flame GIF Container -->
                 </div>
                 <span class="section-label">Garage</span>        
             </div>
@@ -191,7 +202,7 @@
             } else if (event.key === "f" || event.key === "F") {
                 event.preventDefault();
                 if (!robotVisible) {
-                    toggleEngine(); // 切换引擎状态的函数调用
+                    toggleEngine(); // Function call to switch engine state
                 } else if (robotPosition === 'house1') {
                     toggleDoor();
                 }
@@ -223,16 +234,16 @@
             let robotPosition = document.querySelector('.robot').parentNode.id;
             let carPosition = document.querySelector('.car').parentNode.id;
 
-            // 检查是否满足消失条件
+            // Check if the disappearance condition is met
             if ((robotPosition === 'garage1' && carPosition === 'garage') ||
                 (robotPosition === 'driveway1' && carPosition === 'driveway')) {
                 if (robotVisible) {
-                    // 如果机器人当前可见，隐藏机器人
+                    // If the robot is currently visible, hide the robot
                     document.querySelector('.robot').style.display = 'none';
                     document.getElementById('robot-in-car').innerText = 'Yes';
                     robotVisible = false;
                 } else {
-                    // 如果机器人当前不可见，显示机器人
+                    // If the robot is currently not visible, display the robot
                     document.querySelector('.robot').style.display = 'block';
                     document.getElementById('robot-in-car').innerText = 'No';
                     robotVisible = true;
@@ -241,24 +252,24 @@
         }
 
         function toggleEngine() {
-        // 仅在机器人不可见时允许切换引擎状态
+        // Only allow engine state switching when the robot is not visible
             // if (!robotVisible) {
                 engineOn = !engineOn;
                 document.getElementById('engine-on').innerText = engineOn ? 'Yes' : 'No';
 
                 let fireGif = document.querySelector('.fire-gif');
                 if (engineOn) {
-                    fireGif.style.display = 'block';  // 显示火焰
+                    fireGif.style.display = 'block';  // display flame
                 } else {
-                    fireGif.style.display = 'none';  // 隐藏火焰/
+                    fireGif.style.display = 'none';  // hide flame
                 }
             // }
         }
 
         function toggleDoor() {
                     let doorElement = document.querySelector('.door');
-                    doorOpen = !doorOpen;  // 切换门的开关状态
-                    document.getElementById('door-open').innerText = doorOpen ? 'Yes' : 'No';  // 更新状态显示
+                    doorOpen = !doorOpen;  // Switch the on/off status of the door
+                    document.getElementById('door-open').innerText = doorOpen ? 'Yes' : 'No';  // Update status display
 
                     if (doorOpen){
                         document.querySelector('.door').style.display = 'none';
@@ -296,7 +307,7 @@
 
         function updateRobotPositionDisplay() {
             let robotContainer = document.querySelector('.robot').parentNode;
-            let positionLabel = "Unknown"; // 默认位置标签，以防无法识别容器
+            let positionLabel = "Unknown"; // Default location label to prevent container recognition issues
 
             if (robotContainer.id === 'garage1') {
                 positionLabel = "Garage";
@@ -306,7 +317,7 @@
                 positionLabel = "House";
             }
 
-            document.getElementById('robot-position').innerText = positionLabel; // 更新状态栏显示
+            document.getElementById('robot-position').innerText = positionLabel; // Update status bar display
         }
 
         function moveCarRight() {
@@ -336,7 +347,7 @@
 
         function updateCarPositionDisplay() {
             let carContainer = document.querySelector('.car').parentNode;
-            let positionLabel = "Unknown"; // 默认位置标签，以防无法识别容器
+            let positionLabel = "Unknown"; // Default location label to prevent container recognition issues
 
             if (carContainer.id === 'garage') {
                 positionLabel = "Garage";
@@ -346,13 +357,9 @@
                 positionLabel = "House";
             }
 
-            document.getElementById('car-position').innerText = positionLabel; // 更新状态栏显示
+            document.getElementById('car-position').innerText = positionLabel; // Update status bar display
             document.getElementById('robot-position').innerText = positionLabel;
         }
-
-        
-
-
 
     </script>
 </body>

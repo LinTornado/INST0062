@@ -8,43 +8,43 @@
     <style>
         body, html {
             margin: 0;
-            height: 100%; /* 调整为100%以适应内容 */
+            height: 100%; /* Adjusted to 100% to fit the content appropriately */
             font-family: Arial, sans-serif;
             display: flex;
-            flex-direction: column; /* 使内容垂直排列 */
+            flex-direction: column; /* Stack content vertically */
             align-items: center;
         }
 
         #user-inputs {
-            display: flex; /* 使用flex布局使其横向排列 */
+            display: flex; /* Use flex layout to arrange it horizontally */
             align-items: center;
-            width: 100%; /* 根据需要调整宽度 */
-            padding: 10px; /* 添加内边距 */
-            background-color: #f9f9f9; /* 可选：添加背景色 */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* 可选：添加阴影以分层 */
+            width: 100%; /* Adjust the width as needed */
+            padding: 10px; /* Add inner margin */
+            background-color: #f9f9f9; /* Add background color */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Add shadows to layer */
         }
 
         #user-inputs h3 {
-            margin-right: 20px; /* 给标题和表单元素之间添加一些间距 */
+            margin-right: 20px; /* Add some spacing between the title and form elements */
         }
 
         #user-inputs label, #user-inputs select {
-            margin-right: 10px; /* 给每个表单元素之间添加一些间距 */
+            margin-right: 10px; /* Add some spacing between each form element */
         }
 
         #container {
             width: 1200px;
-            height: 650px; /* 增加高度以容纳机器人轨道 */
+            height: 650px; /* Increase the height to accommodate the robot track */
             display: flex;
-            flex-direction: column; /* 改为纵向排列 */
+            flex-direction: column; /* Change to vertical arrangement */
             align-items: stretch;
-            margin-top: 20px; /* 调整整体布局 */
+            margin-top: 20px; /* Adjust the overall layout */
         }
 
         .section-row {
             display: flex;
             width: 100%;
-            flex: 1; /* 使主区块灵活填充空间 */
+            flex: 1; /* Enable flexible filling of space in the main block */
         }
 
         .section {
@@ -69,19 +69,21 @@
             background-image: url('robot/car.png');
             width: 200px;
             height: 200px;
-            transform: scaleX(-1); /* 镜像翻转车的图像 */
+            transform: scaleX(-1); /* Mirror flip car */
         }
+
         .fire-gif {
-            position: absolute;  /* 绝对定位，相对于它的父元素 .car */
-            width: 50px;  /* 火焰 GIF 的宽度 */
-            height: 50px;  /* 火焰 GIF 的高度 */
-            background-image: url('robot/fire.gif');  /* 设置背景图片为火焰 GIF */
-            background-size: cover;  /* 覆盖整个元素 */
-            top: 40%;  /* 垂直居中 */
-            left: 190px;  /* 将火焰位置设置到汽车的左侧 */
+            position: absolute;  /* Absolute positioning, relative to its parent element .car */
+            width: 50px;  /* The width of the flame gif */
+            height: 50px;  /* The height of the flame gif */
+            background-image: url('robot/fire.gif');  /* Set the background image to a flame GIF */
+            background-size: cover;  /* Covering the entire element */
+            top: 40%;  
+            left: 190px;  /* Set the flame position to the left side of the car */
             transform: scaleX(-1);
-            display: none;  /* 初始不显示，只在引擎开启时显示 */
+            display: none;  /* Not displayed initially, only displayed when the engine is turned on */
         }
+
         .door {
             background-image: url('robot/door.png');
             width: 200px;
@@ -92,14 +94,14 @@
 
         .robot {
             background-image: url('robot/robot.png');
-            width: 150px; /* 机器人的宽度 */
-            height: 150px; /* 机器人的高度 */
-            position: absolute; /* 确保机器人的定位是绝对的 */
-            left: 50%; /* 将机器人移动到其父元素的中心点 */
-            top: 50%; /* 将机器人移动到其父元素的中心点 */
-            transform: translate(-50%, -50%); /* 偏移机器人自身宽度和高度的50%，以确保完全居中 */
-            background-size: contain; /* 调整背景大小以适应新尺寸 */
-            background-repeat: no-repeat; /* 背景图片不重复 */
+            width: 150px; /* The width of robot */
+            height: 150px; /* The height of robot */
+            position: absolute; /* Ensure that the positioning of the robot is absolute */
+            left: 50%; /* Move the robot to the center point of its parent element */
+            top: 50%; /* Move the robot to the center point of its parent element */
+            transform: translate(-50%, -50%); /* Offset the robot by 50% of its own width and height to ensure complete centering */
+            background-size: contain; /* Adjust the background size to fit the new size */
+            background-repeat: no-repeat; /* The background image is not duplicated */
         }
 
         .button {
@@ -118,37 +120,37 @@
         }
 
         .robot-track > div {
-            position: relative; /* 确保robot的父元素具有相对定位 */
-            flex: 1; /* 每个轨道部分平分空间 */
-            display: flex; /* 使用Flex布局使内容居中 */
-            align-items: center; /* 垂直居中 */
-            justify-content: center; /* 水平居中 */
+            position: relative; /* Ensure that the parent element of the robot has relative positioning */
+            flex: 1; /* Each orbital segment divides the space equally */
+            display: flex; /* Use Flex layout to center content */
+            align-items: center; /* vertical center */
+            justify-content: center; /* horizontal center */
         }
 
         .section-label {
-            position: absolute;   /* 绝对定位 */
-            top: 10px;         /* 从底部向上10px */
-            left: 50%;            /* 水平居中 */
-            transform: translateX(-50%); /* 确保文本居中 */
-            color: white;         /* 文本颜色为白色 */
-            font-size: 20px;      /* 字体大小 */
-            font-weight: bold;    /* 字体加粗 */
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.6); /* 文本阴影，提高可读性 */
+            position: absolute;   /* Absolute positioning */
+            top: 10px;         /* 10px from bottom to top */
+            left: 50%;            /* horizontal center */
+            transform: translateX(-50%); /* Ensure that the text is centered */
+            color: white;         /* The text color is white */
+            font-size: 20px;      /* font size */
+            font-weight: bold;    /* bold font */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6); /* Text shading */
         }
 
         #status-bar {
             display: flex;
-            justify-content: space-around;  /* 在条目之间均匀分配空间 */
+            justify-content: space-around;  /* Allocate space evenly among items */
             padding: 10px;
-            background-color: #f2f2f2;  /* 浅灰色背景 */
-            color: #333;  /* 深色文字 */
-            width: 98.2%;  /* 占满整个容器宽度 */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);  /* 轻微的阴影效果 */
+            background-color: #f2f2f2;  /* Light gray background */
+            color: #333;  /* Dark text */
+            width: 98.2%;  /* Fill the entire width of the container */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);  /* Slight shadow effect */
         }
 
         .status-item {
-            font-size: 16px;  /* 文字大小 */
-            font-weight: bold;  /* 加粗字体 */
+            font-size: 16px;  /* Text Size */
+            font-weight: bold;  /* Bold font */
         }
     </style>
 </head>
@@ -230,8 +232,8 @@
         var session;
         let robotElement = document.querySelector('.robot'); 
         let carElement = document.querySelector('.car');
-        var engineOn = false;  // 全局变量，用于跟踪引擎状态
-        var doorOpen = false;  // 全局变量，用于跟踪门状态
+        var engineOn = false;  // Global variables used to track engine status
+        var doorOpen = false;  // Global variable used to track door status
 
         function generatePlan() {
             session = pl.create();
@@ -303,7 +305,7 @@
             `, {
                 success: function() {
                     console.log("Prolog rules loaded successfully.");
-                    proceedWithPlanGeneration(); // 继续执行计划生成的逻辑
+                    proceedWithPlanGeneration(); // Continue to execute the logic generated by the plan
                 },
                 error: function(err) {
                     console.error("Failed to load Prolog rules: ", err);
@@ -344,11 +346,11 @@
         }
 
         function showPlanActions(plan) {
-            // 使用更复杂的正则表达式来正确匹配动作，包括括号中的逗号
+            // Use more complex regular expressions to correctly match actions, including commas in parentheses
             const actions = plan.match(/\[(.*?)\]/)[1].match(/([a-zA-Z]+\([^)]*\)|[a-zA-Z]+)/g);
             console.log(actions);
 
-            // 依次执行每个动作
+            // Execute each action sequentially
             executeActions(actions, () => location.reload());
         }
 
@@ -362,9 +364,9 @@
                     console.log("Executing action:", action);
                     performAction(action);
                     index++;
-                    setTimeout(executeNextAction, 2500); // 设置动画间隔为1秒
+                    setTimeout(executeNextAction, 2500); // Set the animation interval to 1 second
                 } else {
-                    callback(); // 动作执行完毕后调用回调函数
+                    callback(); // Call callback function after action execution
                 }
             }
 
@@ -376,21 +378,21 @@
 
             switch (action) {
                 case 'getIntoCar':
-                    document.querySelector('.robot').style.display = 'none'; // 让车消失
+                    document.querySelector('.robot').style.display = 'none'; // Make the car disappear
                     document.getElementById('robot-in-car').innerText = 'Yes';
                     break;
                 case 'pressEngineButton':
-                    // 在这里添加相应的动画代码
+                    // Add the corresponding animation code here
                     engineOn = !engineOn;
                     document.getElementById('engine-on').innerText = engineOn ? 'Yes' : 'No';
                     if (engineOn) {
-                        document.querySelector('.fire-gif').style.display = 'block';  // 显示火焰
+                        document.querySelector('.fire-gif').style.display = 'block';  // Display flame
                     } else {
-                        document.querySelector('.fire-gif').style.display = 'none';  // 隐藏火焰
+                        document.querySelector('.fire-gif').style.display = 'none';  // Hide flame
                     }
                     break;
                 case 'getOutOfCar':
-                    document.querySelector('.robot').style.display = 'block'; // 让车重新出现
+                    document.querySelector('.robot').style.display = 'block'; // Make the car reappear
                     document.getElementById('robot-in-car').innerText = 'No';
                     break;
                 case 'walk(garage,driveway)':                      
@@ -404,7 +406,6 @@
                     document.getElementById('robot-position').innerText = 'House';
                     break;
                 case 'pressGarageDoorButton':
-                    // 在这里添加相应的动画代码
                     doorOpen = !doorOpen;
                     document.getElementById('door-open').innerText = doorOpen ? 'Yes' : 'No';
                     if (doorOpen){
@@ -443,7 +444,6 @@
                     console.log("Unknown action:", action);
             }
         }
-
 
     </script>
 </body>

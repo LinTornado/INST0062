@@ -21,49 +21,54 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
+
         #result {
             margin-top: 20px;
             padding: 10px;
             border: 1px solid #ccc;
             background-color: #f9f9f9;
-            word-wrap: break-word; /* 允许在长单词或URL内部断行 */
-            white-space: pre-wrap; /* 保持空格格式，并允许自动换行 */
-            overflow-wrap: break-word; /* 确保长单词或URL在必要时能断行 */
-            
+            word-wrap: break-word; /* Allow breaking lines within long words */
+            white-space: pre-wrap; /* Maintain space format and allow automatic line breaks */
+            overflow-wrap: break-word; /* Ensure that long words can be broken when necessary */            
         }
+
         .query-container {
             display: flex;
-            align-items: flex-start; /* 对齐顶部 */
+            align-items: flex-start; /* Align top */
             margin-top: 10px;
         }
+
         .query-container span {
             font-family: monospace;
             font-size: 14px;
             margin-right: 5px;
-            margin-top: 6px; /* 确保对齐顶部 */
+            margin-top: 6px; /* Ensure alignment at the top */
         }
+
         textarea {
             width: 100%;
             height: 150px;
             font-family: monospace;
             font-size: 14px;
-            box-sizing: border-box; /* 确保padding和border不会影响总高度 */
+            box-sizing: border-box; /* Ensure that padding and borders do not affect the overall height */
         }
-        .query-textarea-container { /* 添加：新的容器 */
+
+        .query-textarea-container { /* Add new container */
             display: flex;
             flex-grow: 1;
-            height: 150px; /* 确保高度一致 */
+            height: 150px; /* Ensure consistent height */
         }
+
         .query-textarea {
-            flex-grow: 1; /* 确保文本框占据剩余空间 */
-            height: 100%; /* 确保高度与其他文本框一致 */
-            margin-top: 0; /* 确保对齐 */
+            flex-grow: 1; /* Ensure that the text box occupies the remaining space */
+            height: 100%; /* Ensure that the height is consistent with other text boxes */
+            margin-top: 0;
             font-family: monospace;
             font-size: 14px;
-            box-sizing: border-box; /* 确保padding和border不会影响总高度 */
+            box-sizing: border-box; /* Ensure that padding and borders do not affect the overall height */
         }
         #goButton {
-            margin-top: 15px; /* 添加：增加按钮上方的间距 */
+            margin-top: 15px; /* Increase the spacing above the button */
         }
     </style>
 </head>
@@ -78,11 +83,11 @@ Remove this text and define the rules and facts here.
 </textarea>
 
 <div class="query-container">
-    <span>?-</span> <!-- 添加：-?前缀 -->
-    <div class="query-textarea-container"> <!-- 添加：新的容器 -->
+    <span>?-</span> <!-- Add -? prefix -->
+    <div class="query-textarea-container"> <!-- new container -->
         <textarea id="prologQuery" class="query-textarea">
 Remove this text and enter the query here.
-        </textarea> <!-- 修改：添加类query-textarea -->
+        </textarea> <!-- Add class query-textarea -->
     </div>
 </div>
 
